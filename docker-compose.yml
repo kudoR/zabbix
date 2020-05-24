@@ -1,0 +1,46 @@
+version: "3.3"
+
+services:
+  zabbix:
+    image: zabbix/zabbix-server-mysql
+    env_file:
+      - docker-compose.env
+    depends_on:
+      - zabbix-db
+    networks:
+      - zabbix-db-network
+
+  zabbix-fe:
+    image: zabbix/zabbix-web-nginx-mysql
+    environment:
+      VIRTUAL_HOST: zabbix.deverello.de
+    env_file:
+      - docker-compose.env
+    ports:
+      - 8080:8080
+    networks:
+      - zabbix-db-network
+      - auto-proxy
+
+  zabbix-db:
+    image: mariadb
+    env_file:
+      - docker-compose.env
+    networks:
+      - zabbix-db-network
+    volumes:
+      - zabbix-db:/var/lib/mysql
+
+  zabbix-agent:
+    image: zabbix/zabbix-agent2
+    env_file:
+      - docker-compose.env
+    privileged: true
+
+networks:
+  zabbix-db-network:
+  auto-proxy:
+    external: true
+
+volumes:
+  zabbix-db:
