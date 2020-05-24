@@ -8,7 +8,7 @@ services:
     depends_on:
       - zabbix-db
     networks:
-      - zabbix-db-network
+      - zabbix-network
 
   zabbix-fe:
     image: zabbix/zabbix-web-nginx-mysql
@@ -23,7 +23,7 @@ services:
     depends_on:
       - zabbix-db
     networks:
-      - zabbix-db-network
+      - zabbix-network
       - auto-proxy
 
   zabbix-db:
@@ -31,7 +31,7 @@ services:
     env_file:
       - docker-compose.env
     networks:
-      - zabbix-db-network
+      - zabbix-network
     volumes:
       - zabbix-db:/var/lib/mysql
 
@@ -40,9 +40,11 @@ services:
     env_file:
       - docker-compose.env
     privileged: true
+    networks:
+      - zabbix-network
 
 networks:
-  zabbix-db-network:
+  zabbix-network:
   auto-proxy:
     external: true
 
