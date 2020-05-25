@@ -14,8 +14,6 @@ services:
     image: zabbix/zabbix-web-nginx-mysql
     environment:
       VIRTUAL_HOST: zabbix.deverello.de
-      LETSENCRYPT_HOST: zabbix.deverello.de
-      LETSENCRYPT_EMAIL: johannes.hinkov@gmail.com
     env_file:
       - docker-compose.env
     ports:
