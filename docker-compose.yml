@@ -14,12 +14,15 @@ services:
     image: zabbix/zabbix-web-nginx-mysql
     env_file:
       - docker-compose.env
+    environment:
+      VIRTUAL_HOST: zabbix.deverello.de
     ports:
       - 8080:8080
     depends_on:
       - zabbix-db
     networks:
       - zabbix-network
+      - auto-proxy
 
   zabbix-db:
     image: mariadb
@@ -40,6 +43,7 @@ services:
 
 networks:
   zabbix-network:
+  auto-proxy:
 
 volumes:
   zabbix-db:
